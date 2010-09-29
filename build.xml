@@ -207,7 +207,7 @@
 		<!-- git revision, if any -->
 		<exec executable="git"
 			failifexecutionfails="false"
-			errorProperty="git.errror"
+			errorProperty="git.error"
 			outputproperty="git.describe"
 			resultproperty="git.result">
 			<arg value="describe" />
@@ -224,10 +224,11 @@
 		</tstamp>
 
 		<!-- Parse minor version, major version and release date from changelog -->
+		<!-- Use current TSTAMP and append git revision, if there is no release date yet ("YEAR-xx-xx") -->
 		<loadfile property="changelog" srcFile="${temp_dir}/tinymce/changelog.txt">
 			<filterchain>
 				<tokenfilter>
-					<replaceregex pattern="\.x \(2010-xx-xx\)" replace=".x.${git.revision} (${TSTAMP_YMD})" />
+					<replaceregex pattern="(\.\w+) \(\d{4}-xx-xx\)" replace="\1.git${git.revision} (${TSTAMP_YMD})" />
 				</tokenfilter>
 			</filterchain>
 		</loadfile>
